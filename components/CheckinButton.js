@@ -32,7 +32,7 @@ const CheckinButton = (props) => {
         </Touchablecmp>
       )}
       {isCheckedin && (
-        <View>
+        <View style={styles.checkedinContainer}>
           <Text style={{ ...styles.checkedinText, ...props.styles }}>
             Checked in
           </Text>
@@ -58,6 +58,9 @@ const styles = StyleSheet.create({
   textButton: {
     fontSize: 26,
     fontFamily: "open-sans",
+  },
+  checkedinContainer: {
+    padding: 5,
   },
   checkedinText: {
     fontSize: 26,
