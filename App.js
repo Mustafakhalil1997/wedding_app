@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { enableScreens } from "react-native-screens";
 import { combineReducers, createStore, applyMiddleware } from "redux";
@@ -42,6 +42,25 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
+
+  useEffect(() => {
+    const fetchInvitees = async () => {
+      console.log("this is");
+      try {
+        const response = await fetch(
+          "https://weddingproject2-ce55f-default-rtdb.firebaseio.com/invitees.json"
+        );
+        if (response.ok) {
+          const values = await response.json();
+          console.log("values ", values);
+          console.log(values["akhalil"]);
+        }
+      } catch (error) {
+        console.log("error ", error);
+      }
+    };
+    fetchInvitees();
+  }, []);
 
   if (!fontLoaded) {
     return (

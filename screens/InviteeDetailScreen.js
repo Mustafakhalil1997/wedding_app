@@ -8,6 +8,27 @@ import Colors from "../constants/Colors";
 
 const inviteeDetailScreen = (props) => {
   const { route } = props;
+  const [hisName, sethisName] = useState("");
+
+  useEffect(() => {
+    const fetchInvitees = async () => {
+      console.log("this is");
+      try {
+        const response = await fetch(
+          "https://weddingproject2-ce55f-default-rtdb.firebaseio.com/invitees.json"
+        );
+        if (response.ok) {
+          const values = await response.json();
+          console.log("values ", values);
+          console.log(values["akhalil"]);
+          sethisName(values["akhalil"].name);
+        }
+      } catch (error) {
+        console.log("error ", error);
+      }
+    };
+    fetchInvitees();
+  }, []);
 
   const name = route.params.name;
   console.log(name);
@@ -50,6 +71,7 @@ const inviteeDetailScreen = (props) => {
           isCheckedin={isCheckedin}
           checkinInvitee={checkinInvitee}
         />
+        <Text>{hisName}</Text>
       </View>
     </View>
   );
