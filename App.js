@@ -1,5 +1,7 @@
 import "react-native-gesture-handler";
 
+import database from "@react-native-firebase/app";
+
 import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { enableScreens } from "react-native-screens";
