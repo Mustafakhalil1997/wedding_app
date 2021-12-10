@@ -1,6 +1,7 @@
 import "react-native-gesture-handler";
 
-import database from "@react-native-firebase/app";
+// import database from "@react-native-firebase/database";
+import { firebase } from "@react-native-firebase/database";
 
 import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
@@ -42,8 +43,15 @@ const fetchFonts = () => {
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const database = firebase
+  .app()
+  .database("https://weddingproject2-ce55f-default-rtdb.firebaseio.com/")
+  .ref("/groups");
+
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
+
+  console.log("database ", database);
 
   useEffect(() => {
     const fetchInvitees = async () => {
