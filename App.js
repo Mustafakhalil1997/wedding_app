@@ -15,6 +15,7 @@ import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
 
 import AppLoading from "expo-app-loading";
@@ -27,6 +28,8 @@ import inviteeDetailScreen from "./screens/InviteeDetailScreen";
 import TablesScreen from "./screens/TablesScreen";
 import inviteeListReducer from "./store/reducers/InviteeList";
 import TableDetailScreen from "./screens/TableDetailScreen";
+import CustomHeaderButton from "./components/HeaderButton";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 enableScreens();
 
@@ -63,6 +66,7 @@ initializeApp(firebaseConfig);
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -98,13 +102,28 @@ export default function App() {
 
   const ListStackNavigator = () => {
     return (
-      <Stack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: "center",
+        }}
+      >
         <Stack.Screen
           name="inviteesList"
           component={InviteesScreen}
-          options={{
+          options={({ route, navigation }) => ({
             title: "Invitee List",
-          }}
+            headerLeft: () => (
+              <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+                <Item
+                  title="Menu"
+                  iconName="ios-menu"
+                  onPress={() => {
+                    navigation.toggleDrawer();
+                  }}
+                />
+              </HeaderButtons>
+            ),
+          })}
         />
         <Stack.Screen
           name="inviteeDetails"
@@ -123,9 +142,20 @@ export default function App() {
         <Stack.Screen
           name="tables"
           component={TablesScreen}
-          options={{
+          options={({ navigation }) => ({
             title: "Tables",
-          }}
+            headerLeft: () => (
+              <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+                <Item
+                  title="Menu"
+                  iconName="ios-menu"
+                  onPress={() => {
+                    navigation.toggleDrawer();
+                  }}
+                />
+              </HeaderButtons>
+            ),
+          })}
         />
         <Stack.Screen
           name="table"
@@ -138,49 +168,80 @@ export default function App() {
     );
   };
 
+  const TabNavigator = () => {
+    return (
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          headerShown: false,
+          tabBarActiveTintColor: Colors.accentColor,
+          tabBarItemStyle: {
+            fontSize: 25,
+          },
+          tabBarStyle: {
+            fontSize: 20,
+          },
+          tabBarLabelStyle: {
+            fontSize: 12,
+          },
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === "listTab") {
+              iconName = focused ? "checkbox" : "checkbox-outline";
+            } else if (route.name === "tablesTab") {
+              iconName = focused ? "grid-sharp" : "grid-outline";
+            }
+            return <Ionicons name={iconName} size={25} color={"red"} />;
+          },
+        })}
+      >
+        <Tab.Screen
+          name="listTab"
+          component={ListStackNavigator}
+          options={{
+            title: "Invitee List",
+          }}
+        />
+        <Tab.Screen
+          name="tablesTab"
+          component={TableStackNavigator}
+          options={{
+            title: "Tables",
+          }}
+        />
+      </Tab.Navigator>
+    );
+  };
+
+  const CheckInsStackNavigator = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="CheckIns" component={() => {}} />
+      </Stack.Navigator>
+    );
+  };
+
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
+        <Drawer.Navigator
+          screenOptions={{
             headerShown: false,
-            tabBarActiveTintColor: Colors.accentColor,
-            tabBarItemStyle: {
-              fontSize: 25,
+            drawerActiveTintColor: Colors.accentColor,
+            drawerLabelStyle: {
+              fontFamily: "open-sans-bold",
             },
-            tabBarStyle: {
-              fontSize: 20,
-            },
-            tabBarLabelStyle: {
-              fontSize: 12,
-            },
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-
-              if (route.name === "listTab") {
-                iconName = focused ? "checkbox" : "checkbox-outline";
-              } else if (route.name === "tablesTab") {
-                iconName = focused ? "grid-sharp" : "grid-outline";
-              }
-              return <Ionicons name={iconName} size={25} color={"red"} />;
-            },
-          })}
+          }}
         >
-          <Tab.Screen
-            name="listTab"
-            component={ListStackNavigator}
+          <Drawer.Screen
+            name="MainList"
+            component={TabNavigator}
             options={{
-              title: "Invitee List",
+              drawerLabel: "MainList",
             }}
           />
-          <Tab.Screen
-            name="tablesTab"
-            component={TableStackNavigator}
-            options={{
-              title: "Tables",
-            }}
-          />
-        </Tab.Navigator>
+          <Drawer.Screen name="Check-ins" component={CheckInsStackNavigator} />
+        </Drawer.Navigator>
       </NavigationContainer>
     </Provider>
   );
