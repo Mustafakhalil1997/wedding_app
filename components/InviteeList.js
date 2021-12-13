@@ -5,26 +5,14 @@ import { useSelector } from "react-redux";
 import InviteeItem from "./InviteeItem";
 
 const InviteeList = (props) => {
-  const { navigation } = props;
-
-  const dummy_list = useSelector((state) => state.inviteeList.inviteeList);
-
-  const [inviteeList, setInviteeList] = useState(dummy_list);
-  const [searchList, setSearchList] = useState(dummy_list);
+  const { navigation, data, textChangeHandler } = props;
 
   const [nameInput, setNameInput] = useState("");
 
-  const textChangeHandler = (value) => {
+  const inputChangeHander = (value) => {
+    console.log("value ", value);
     setNameInput(value);
-
-    const newArray = inviteeList.filter((item) => {
-      const length = value.length;
-      console.log("item in search ", value);
-      const newItem = item.slice(0, length);
-      console.log("newItem ", newItem);
-      if (value.toLowerCase() === newItem.toLowerCase()) return item;
-    });
-    setSearchList(newArray);
+    textChangeHandler(value);
   };
 
   const goToInvitee = (item) => {
@@ -48,11 +36,11 @@ const InviteeList = (props) => {
           keyboardType="default"
           placeholder="Search here.."
           value={nameInput}
-          onChangeText={textChangeHandler}
+          onChangeText={inputChangeHander}
         />
       </View>
       <FlatList
-        data={searchList}
+        data={data}
         renderItem={renderName}
         keyExtractor={(item, index) => index}
       />
