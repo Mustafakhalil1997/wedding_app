@@ -43,7 +43,9 @@ const InviteeItem = (props) => {
 
 const styles = StyleSheet.create({
   itemContainer: {
+    flex: 1,
     flexDirection: "row",
+    // height: 60,
     borderRadius: 10,
     overflow: "hidden",
     margin: 5,

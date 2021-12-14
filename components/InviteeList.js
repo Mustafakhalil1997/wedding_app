@@ -39,11 +39,13 @@ const InviteeList = (props) => {
           onChangeText={inputChangeHander}
         />
       </View>
-      <FlatList
-        data={data}
-        renderItem={renderName}
-        keyExtractor={(item, index) => index}
-      />
+      <View>
+        <FlatList
+          data={data}
+          renderItem={renderName}
+          keyExtractor={(item, index) => index}
+        />
+      </View>
     </View>
   );
 };
@@ -61,7 +63,7 @@ const styles = StyleSheet.create({
     borderColor: "#CED0CE",
   },
   textInput: {
-    marginVertical: 10,
+    // marginVertical: 10,
     height: 40,
     borderBottomWidth: 1,
     padding: 10,

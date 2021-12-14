@@ -7,6 +7,7 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 import React, { useCallback, useEffect, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet } from "react-native";
 import { enableScreens } from "react-native-screens";
 import { combineReducers, createStore, applyMiddleware } from "redux";
@@ -224,26 +225,35 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Drawer.Navigator
-          screenOptions={{
-            headerShown: false,
-            drawerActiveTintColor: Colors.accentColor,
-            drawerLabelStyle: {
-              fontFamily: "open-sans-bold",
-            },
-          }}
-        >
-          <Drawer.Screen
-            name="MainList"
-            component={TabNavigator}
-            options={{
-              drawerLabel: "MainList",
+      <SafeAreaView
+        style={{
+          flex: 1,
+        }}
+      >
+        <NavigationContainer>
+          <Drawer.Navigator
+            screenOptions={{
+              headerShown: false,
+              drawerActiveTintColor: Colors.accentColor,
+              drawerLabelStyle: {
+                fontFamily: "open-sans-bold",
+              },
             }}
-          />
-          <Drawer.Screen name="Check-ins" component={CheckInsStackNavigator} />
-        </Drawer.Navigator>
-      </NavigationContainer>
+          >
+            <Drawer.Screen
+              name="MainList"
+              component={TabNavigator}
+              options={{
+                drawerLabel: "MainList",
+              }}
+            />
+            <Drawer.Screen
+              name="Check-ins"
+              component={CheckInsStackNavigator}
+            />
+          </Drawer.Navigator>
+        </NavigationContainer>
+      </SafeAreaView>
     </Provider>
   );
 }
