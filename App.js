@@ -30,6 +30,7 @@ import inviteeListReducer from "./store/reducers/InviteeList";
 import TableDetailScreen from "./screens/TableDetailScreen";
 import CustomHeaderButton from "./components/HeaderButton";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import CheckinsScreen from "./screens/CheckinsScreen";
 
 enableScreens();
 
@@ -216,7 +217,7 @@ export default function App() {
   const CheckInsStackNavigator = () => {
     return (
       <Stack.Navigator>
-        <Stack.Screen name="CheckIns" component={() => {}} />
+        <Stack.Screen name="CheckIns" component={CheckinsScreen} />
       </Stack.Navigator>
     );
   };
