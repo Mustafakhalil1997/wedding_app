@@ -1,3 +1,4 @@
+export const SET_LIST = "SET_LIST";
 export const ADD_LIST = "ADD_LIST";
 
 export const addList = (list) => {
@@ -6,4 +7,8 @@ export const addList = (list) => {
     // fetch();
     dispatch({ type: ADD_LIST, inviteeList: list });
   };
+};
+
+export const setList = (list) => {
+  return { type: SET_LIST, inviteeList: list };
 };
