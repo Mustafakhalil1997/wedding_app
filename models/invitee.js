@@ -5,6 +5,10 @@ class Invitee {
     this.isPriority = isPriority;
     this.checkIn = checkIn;
   }
+
+  setCheckin() {
+    this.checkIn = !this.checkIn;
+  }
 }
 
 export default Invitee;

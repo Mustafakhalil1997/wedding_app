@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, TouchableNativeFeedback } from "react-native";
 import CheckinButton from "./CheckinButton";
 import { InitializeFirebase } from "./../InitializeFirebase";
 import { getDatabase, set, ref } from "firebase/database";
+import { useDispatch } from "react-redux";
+import { setInvitee } from "./../store/actions/inviteeList";
 
 InitializeFirebase();
 
 const InviteeItem = (props) => {
   const { item, onSelect } = props;
+
+  const dispatch = useDispatch();
 
   const { id, name, checkIn, isPriority } = item;
   // console.log("item ", item);
@@ -15,6 +19,10 @@ const InviteeItem = (props) => {
   // console.log("name ", name);
   //should be retrieved from redux store, after integrating with database
   const [isCheckedin, setIsCheckedin] = useState(false);
+
+  const dispatchEvent = () => {
+    dispatch(setInvitee(id));
+  };
 
   const updateCheckIn = () => {
     const db = getDatabase();
@@ -27,8 +35,9 @@ const InviteeItem = (props) => {
 
   const checkinInvitee = () => {
     // update in the database
-    updateCheckIn();
     setIsCheckedin(true);
+    updateCheckIn();
+    dispatchEvent();
   };
 
   return (
@@ -50,6 +59,7 @@ const InviteeItem = (props) => {
                 styles={{ fontSize: 16 }}
                 isCheckedin={checkIn}
                 checkinInvitee={checkinInvitee}
+                dispatchEvent={dispatchEvent}
               />
             </View>
           </View>
