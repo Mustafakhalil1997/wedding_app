@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import InviteeList from "../components/InviteeList";
@@ -27,16 +27,21 @@ import { InitializeFirebase } from "./../InitializeFirebase";
 
 InitializeFirebase();
 
-const db = getDatabase();
-const list = ref(db, "invitees");
-
 const InviteesScreen = ({ navigation }) => {
   const dummy_list = useSelector((state) => state.inviteeList.inviteeList);
-
+  // console.log("dummy_list ", dummy_list);
   const [inviteeList, setInviteeList] = useState(dummy_list);
   const [searchList, setSearchList] = useState(dummy_list);
+  // console.log("searchList ", searchList);
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // const db = getDatabase();
+    // const list = ref(db, "invitees");
+    dispatch(setList());
+    setSearchList(dummy_list);
+  }, [dispatch]);
 
   // onValue(list, (snapshot) => {
   //   console.log("onValue is here");
@@ -68,7 +73,7 @@ const InviteesScreen = ({ navigation }) => {
     <InviteeList
       navigation={navigation}
       textChangeHandler={textChangeHandler}
-      data={searchList}
+      data={dummy_list}
     />
   );
 };

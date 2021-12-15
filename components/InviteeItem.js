@@ -1,15 +1,33 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, TouchableNativeFeedback } from "react-native";
 import CheckinButton from "./CheckinButton";
+import { InitializeFirebase } from "./../InitializeFirebase";
+import { getDatabase, set, ref } from "firebase/database";
+
+InitializeFirebase();
 
 const InviteeItem = (props) => {
   const { item, onSelect } = props;
 
+  const { id, name, checkIn, isPriority } = item;
+  // console.log("item ", item);
+  console.log("id ", id);
+  // console.log("name ", name);
   //should be retrieved from redux store, after integrating with database
   const [isCheckedin, setIsCheckedin] = useState(false);
 
+  const updateCheckIn = () => {
+    const db = getDatabase();
+    set(ref(db, "invitees/" + id), {
+      checkin: true,
+      ispriority: isPriority,
+      name: name,
+    });
+  };
+
   const checkinInvitee = () => {
     // update in the database
+    updateCheckIn();
     setIsCheckedin(true);
   };
 
@@ -20,7 +38,7 @@ const InviteeItem = (props) => {
           <View style={styles.inviteeItem}>
             <View style={styles.nameContainer}>
               <Text style={styles.nameLabel}>
-                {item.charAt(0).toUpperCase() + item.slice(1)}
+                {name.charAt(0).toUpperCase() + name.slice(1)}
               </Text>
             </View>
 
@@ -30,7 +48,7 @@ const InviteeItem = (props) => {
               </View>
               <CheckinButton
                 styles={{ fontSize: 16 }}
-                isCheckedin={isCheckedin}
+                isCheckedin={checkIn}
                 checkinInvitee={checkinInvitee}
               />
             </View>

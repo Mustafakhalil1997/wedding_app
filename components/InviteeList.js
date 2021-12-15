@@ -23,10 +23,13 @@ const InviteeList = (props) => {
       },
     });
   };
+  let count = 1;
 
   const renderName = (itemData) => {
+    console.log("rendering item ", count);
+    count++;
     const { item } = itemData;
-    return <InviteeItem item={item} onSelect={() => goToInvitee(item)} />;
+    return <InviteeItem item={item} onSelect={() => goToInvitee(item.name)} />;
   };
 
   return (
@@ -43,7 +46,7 @@ const InviteeList = (props) => {
         <FlatList
           data={data}
           renderItem={renderName}
-          keyExtractor={(item, index) => index}
+          // keyExtractor={(item, index) => index}
         />
       </View>
     </View>

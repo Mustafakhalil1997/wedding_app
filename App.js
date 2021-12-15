@@ -35,18 +35,18 @@ import CheckinsScreen from "./screens/CheckinsScreen";
 
 enableScreens();
 
-const rootReducer = combineReducers({
-  inviteeList: inviteeListReducer,
-});
-
-const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
-
 const fetchFonts = () => {
   return Font.loadAsync({
     "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
     "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
   });
 };
+
+const rootReducer = combineReducers({
+  inviteeList: inviteeListReducer,
+});
+
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 // // Your web app's Firebase configuration
 // // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -73,6 +73,16 @@ const Drawer = createDrawerNavigator();
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
 
+  if (!fontLoaded) {
+    return (
+      <AppLoading
+        startAsync={fetchFonts}
+        onFinish={() => setFontLoaded(true)}
+        onError={console.warn}
+      />
+    );
+  }
+
   // useEffect(() => {
   //   const fetchInvitees = async () => {
   //     console.log("this is");
@@ -91,16 +101,6 @@ export default function App() {
   //   };
   //   fetchInvitees();
   // }, []);
-
-  if (!fontLoaded) {
-    return (
-      <AppLoading
-        startAsync={fetchFonts}
-        onFinish={() => setFontLoaded(true)}
-        onError={console.warn}
-      />
-    );
-  }
 
   const ListStackNavigator = () => {
     return (
@@ -225,35 +225,26 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <SafeAreaView
-        style={{
-          flex: 1,
-        }}
-      >
-        <NavigationContainer>
-          <Drawer.Navigator
-            screenOptions={{
-              headerShown: false,
-              drawerActiveTintColor: Colors.accentColor,
-              drawerLabelStyle: {
-                fontFamily: "open-sans-bold",
-              },
+      <NavigationContainer>
+        <Drawer.Navigator
+          screenOptions={{
+            headerShown: false,
+            drawerActiveTintColor: Colors.accentColor,
+            drawerLabelStyle: {
+              fontFamily: "open-sans-bold",
+            },
+          }}
+        >
+          <Drawer.Screen
+            name="MainList"
+            component={TabNavigator}
+            options={{
+              drawerLabel: "MainList",
             }}
-          >
-            <Drawer.Screen
-              name="MainList"
-              component={TabNavigator}
-              options={{
-                drawerLabel: "MainList",
-              }}
-            />
-            <Drawer.Screen
-              name="Check-ins"
-              component={CheckInsStackNavigator}
-            />
-          </Drawer.Navigator>
-        </NavigationContainer>
-      </SafeAreaView>
+          />
+          <Drawer.Screen name="Check-ins" component={CheckInsStackNavigator} />
+        </Drawer.Navigator>
+      </NavigationContainer>
     </Provider>
   );
 }
