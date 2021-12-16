@@ -5,45 +5,43 @@ import CheckinButton from "../components/CheckinButton";
 import DropDown from "../components/DropDown";
 import ImgPicker from "../components/ImagePicker";
 import Colors from "../constants/Colors";
+import { InitializeFirebase } from "./../InitializeFirebase";
+import { getDatabase, ref, set } from "firebase/database";
+import { useSelector } from "react-redux";
+
+InitializeFirebase();
 
 const inviteeDetailScreen = (props) => {
   const { route } = props;
   const [hisName, sethisName] = useState("");
 
-  // useEffect(() => {
-  //   const fetchInvitees = async () => {
-  //     console.log("this is");
-  //     try {
-  //       const response = await fetch(
-  //         "https://weddingproject2-ce55f-default-rtdb.firebaseio.com/invitees.json"
-  //       );
-  //       if (response.ok) {
-  //         const values = await response.json();
-  //         console.log("values ", values);
-  //         console.log(values["akhalil"]);
-  //         sethisName(values["akhalil"].name);
-  //       }
-  //     } catch (error) {
-  //       console.log("error ", error);
-  //     }
-  //   };
-  //   fetchInvitees();
-  // }, []);
+  const inviteeItem = route.params.invitee;
+  const { id, name, checkIn, isPriority } = inviteeItem;
 
-  const name = route.params.name;
+  console.log("inviteeItem ", inviteeItem);
   console.log(name);
+  console.log("checInnnn ", checkIn);
   const newName = name.charAt(0).toUpperCase() + name.slice(1);
 
   //should be retrieved from redux store, after integrating with database
-  const [isCheckedin, setIsCheckedin] = useState(false);
-
-  const checkinInvitee = () => {
-    // update in the database
-    setIsCheckedin(true);
-  };
 
   const openCamera = () => {
     setIsCameraOpen(true);
+  };
+
+  const updateCheckIn = () => {
+    const db = getDatabase();
+    set(ref(db, "invitees/" + id), {
+      checkin: true,
+      ispriority: isPriority,
+      name: name,
+    });
+  };
+
+  const checkinInvitee = () => {
+    // update in the database
+    updateCheckIn();
+    // dispatchEvent();
   };
 
   return (
@@ -67,10 +65,7 @@ const inviteeDetailScreen = (props) => {
         <ImgPicker />
       </View>
       <View style={styles.submit}>
-        <CheckinButton
-          isCheckedin={isCheckedin}
-          checkinInvitee={checkinInvitee}
-        />
+        <CheckinButton isCheckedin={checkIn} checkinInvitee={checkinInvitee} />
         <Text>{hisName}</Text>
       </View>
     </View>

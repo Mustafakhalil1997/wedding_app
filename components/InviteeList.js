@@ -15,21 +15,12 @@ const InviteeList = (props) => {
     textChangeHandler(value);
   };
 
-  const goToInvitee = (item) => {
-    navigation.navigate({
-      name: "inviteeDetails",
-      params: {
-        name: item,
-      },
-    });
-  };
   let count = 1;
 
   const renderName = (itemData) => {
-    console.log("rendering item ", count);
     count++;
     const { item } = itemData;
-    return <InviteeItem item={item} onSelect={() => goToInvitee(item.name)} />;
+    return <InviteeItem item={item} navigation={navigation} />;
   };
 
   return (

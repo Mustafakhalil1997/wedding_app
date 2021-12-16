@@ -1,28 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { View, StyleSheet, Text, TouchableNativeFeedback } from "react-native";
 import CheckinButton from "./CheckinButton";
 import { InitializeFirebase } from "./../InitializeFirebase";
 import { getDatabase, set, ref } from "firebase/database";
 import { useDispatch } from "react-redux";
-import { setInvitee } from "./../store/actions/inviteeList";
 
 InitializeFirebase();
 
 const InviteeItem = (props) => {
-  const { item, onSelect } = props;
-
-  const dispatch = useDispatch();
+  const { item, navigation } = props;
 
   const { id, name, checkIn, isPriority } = item;
-  // console.log("item ", item);
-  console.log("id ", id);
-  // console.log("name ", name);
-  //should be retrieved from redux store, after integrating with database
-  const [isCheckedin, setIsCheckedin] = useState(false);
+  console.log("checkin ", checkIn);
 
-  const dispatchEvent = () => {
-    dispatch(setInvitee(id));
-  };
+  const dispatchEvent = () => {};
 
   const updateCheckIn = () => {
     const db = getDatabase();
@@ -35,15 +26,22 @@ const InviteeItem = (props) => {
 
   const checkinInvitee = () => {
     // update in the database
-    setIsCheckedin(true);
     updateCheckIn();
-    dispatchEvent();
+  };
+
+  const goInviteeDetails = () => {
+    navigation.navigate({
+      name: "inviteeDetails",
+      params: {
+        invitee: item,
+      },
+    });
   };
 
   return (
     <View>
       <View style={styles.itemContainer}>
-        <TouchableNativeFeedback onPress={onSelect}>
+        <TouchableNativeFeedback onPress={goInviteeDetails}>
           <View style={styles.inviteeItem}>
             <View style={styles.nameContainer}>
               <Text style={styles.nameLabel}>
