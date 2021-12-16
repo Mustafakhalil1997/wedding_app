@@ -13,21 +13,17 @@ InitializeFirebase();
 
 const inviteeDetailScreen = (props) => {
   const { route } = props;
-  const [hisName, sethisName] = useState("");
 
   const inviteeItem = route.params.invitee;
   const { id, name, checkIn, isPriority } = inviteeItem;
 
-  console.log("inviteeItem ", inviteeItem);
-  console.log(name);
-  console.log("checInnnn ", checkIn);
   const newName = name.charAt(0).toUpperCase() + name.slice(1);
 
-  //should be retrieved from redux store, after integrating with database
+  const [isCheckedin, setIsCheckedin] = useState(checkIn);
 
-  const openCamera = () => {
-    setIsCameraOpen(true);
-  };
+  // const openCamera = () => {
+  //   setIsCameraOpen(true);
+  // };
 
   const updateCheckIn = () => {
     const db = getDatabase();
@@ -40,6 +36,7 @@ const inviteeDetailScreen = (props) => {
 
   const checkinInvitee = () => {
     // update in the database
+    setIsCheckedin(true);
     updateCheckIn();
     // dispatchEvent();
   };
@@ -65,8 +62,10 @@ const inviteeDetailScreen = (props) => {
         <ImgPicker />
       </View>
       <View style={styles.submit}>
-        <CheckinButton isCheckedin={checkIn} checkinInvitee={checkinInvitee} />
-        <Text>{hisName}</Text>
+        <CheckinButton
+          isCheckedin={isCheckedin}
+          checkinInvitee={checkinInvitee}
+        />
       </View>
     </View>
   );

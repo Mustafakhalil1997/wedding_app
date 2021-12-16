@@ -52,27 +52,9 @@ export const setList = () => {
         const checkIn = resData[key].checkin;
         loadedInvitees.push(new Invitee(key, name, isPriority, checkIn));
       }
+      console.log("falsyyyyyy");
       // console.log("loadedInvitees ", loadedInvitees);
       dispatch({ type: SET_LIST, inviteeList: loadedInvitees });
     });
-
-    // const response = await fetch(
-    //   "https://weddingproject2-ce55f-default-rtdb.firebaseio.com/invitees.json"
-    // );
-    // if (response.ok) {
-    //   const resData = await response.json();
-    //   console.log("resData ", resData);
-    //   let loadedInvitees = [];
-    //   for (const key in resData) {
-    //     const name = resData[key].name;
-    //     const isPriority = resData[key].ispriority;
-    //     const checkIn = resData[key].checkin;
-    //     loadedInvitees.push(new Invitee(key, name, isPriority, checkIn));
-    //   }
-    //   console.log("loadedInvitees ", loadedInvitees);
-    //   dispatch({ type: SET_LIST, inviteeList: loadedInvitees });
-    // } else {
-    //   console.log(response.error);
-    // }
   };
 };

@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import InviteeList from "../components/InviteeList";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, onValue } from "firebase/database";
 import { setList } from "../store/actions/inviteeList";
 import { InitializeFirebase } from "./../InitializeFirebase";
+import Colors from "../constants/Colors";
 
 // // Your web app's Firebase configuration
 // // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -33,13 +34,26 @@ const InviteesScreen = ({ navigation }) => {
   const [inviteeList, setInviteeList] = useState(dummy_list);
   const [searchList, setSearchList] = useState(dummy_list);
   // console.log("searchList ", searchList);
+  const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     // const db = getDatabase();
     // const list = ref(db, "invitees");
-    dispatch(setList());
+    // setIsLoading(true);
+    // dispatch(setList())
+    //   .then(() => {
+    //     console.log("falsyy");
+    //     setIsLoading(false);
+    //   })
+    //   .catch((error) => {});
+    const loadList = async () => {
+      setIsLoading(true);
+      dispatch(setList());
+      setIsLoading(false);
+    };
+    loadList();
     setSearchList(dummy_list);
   }, [dispatch]);
 
@@ -69,13 +83,24 @@ const InviteesScreen = ({ navigation }) => {
     setSearchList(newArray);
   };
 
-  return (
-    <InviteeList
-      navigation={navigation}
-      textChangeHandler={textChangeHandler}
-      data={dummy_list}
-    />
-  );
+  if (isLoading) {
+    console.log("isLoadinggg ", isLoading);
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color={Colors.primaryColor} />
+        <Text>isLoading</Text>
+      </View>
+    );
+  } else {
+    console.log("isLoading ", isLoading);
+    return (
+      <InviteeList
+        navigation={navigation}
+        textChangeHandler={textChangeHandler}
+        data={dummy_list}
+      />
+    );
+  }
 };
 
 export default InviteesScreen;

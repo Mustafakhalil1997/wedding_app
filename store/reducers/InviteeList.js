@@ -12,7 +12,7 @@ const dummy_list = [
 ];
 
 const initialState = {
-  inviteeList: dummy_list,
+  inviteeList: [],
 };
 
 const inviteeListReducer = (state = initialState, action) => {
