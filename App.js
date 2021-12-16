@@ -18,6 +18,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
@@ -30,7 +31,6 @@ import TablesScreen from "./screens/TablesScreen";
 import inviteeListReducer from "./store/reducers/InviteeList";
 import TableDetailScreen from "./screens/TableDetailScreen";
 import CustomHeaderButton from "./components/HeaderButton";
-import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CheckinsScreen from "./screens/CheckinsScreen";
 
 enableScreens();

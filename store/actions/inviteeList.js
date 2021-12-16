@@ -1,7 +1,7 @@
-export const SET_LIST = "SET_LIST";
 import Invitee from "./../../models/invitee";
 import { InitializeFirebase } from "./../../InitializeFirebase";
 import { getDatabase, ref, onValue } from "firebase/database";
+export const SET_LIST = "SET_LIST";
 export const ADD_LIST = "ADD_LIST";
 export const SET_INVITEE = "SET_INVITEE";
 
@@ -31,7 +31,7 @@ export const setList = () => {
     //   "https://weddingproject2-ce55f-default-rtdb.firebaseio.com/invitees.json"
     // );
     // const resData = await response.json();
-    // let loadedInvitees = [];
+    // const loadedInvitees = [];
     // for (const key in resData) {
     //   const name = resData[key].name;
     //   const isPriority = resData[key].ispriority;
@@ -43,8 +43,8 @@ export const setList = () => {
     const db = getDatabase();
     const listRef = ref(db, "invitees");
 
-    onValue(listRef, (snapshot) => {
-      const resData = snapshot.val();
+    onValue(listRef, async (snapshot) => {
+      const resData = await snapshot.val();
       let loadedInvitees = [];
       for (const key in resData) {
         const name = resData[key].name;
