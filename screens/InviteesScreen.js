@@ -34,7 +34,7 @@ const InviteesScreen = ({ navigation }) => {
   const [inviteeList, setInviteeList] = useState(dummy_list);
   const [searchList, setSearchList] = useState(dummy_list);
   // console.log("searchList ", searchList);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -50,25 +50,12 @@ const InviteesScreen = ({ navigation }) => {
     //   .catch((error) => {});
     const loadList = async () => {
       setIsLoading(true);
-      dispatch(setList());
+      await dispatch(setList()); // await is not working and the code is still running asynchronously
       setIsLoading(false);
     };
     loadList();
     setSearchList(dummy_list);
   }, [dispatch]);
-
-  // onValue(list, (snapshot) => {
-  //   console.log("onValue is here");
-  //   const data = snapshot.val();
-  //   // console.log("data ", data);
-  //   // console.log("dataaa", data[Object.keys(data)[1]]);
-  //   // console.log(Object.keys(data).length);
-  //   if (JSON.stringify(data) !== JSON.stringify(searchList)) {
-  //     console.log("hello");
-  //     setSearchList(data);
-  //     dispatch(setList(data));
-  //   }
-  // });
 
   const textChangeHandler = (value) => {
     console.log("value ", value);

@@ -1,21 +1,22 @@
 import React, { useEffect, useState, version } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 
-import CheckinButton from "../components/CheckinButton";
-import DropDown from "../components/DropDown";
-import ImgPicker from "../components/ImagePicker";
-import Colors from "../constants/Colors";
 import { InitializeFirebase } from "./../InitializeFirebase";
 import { getDatabase, ref, set } from "firebase/database";
 import { useSelector } from "react-redux";
 
+import CheckinButton from "../components/CheckinButton";
+import DropDown from "../components/DropDown";
+import ImgPicker from "../components/ImagePicker";
+import Colors from "../constants/Colors";
+
 InitializeFirebase();
 
 const inviteeDetailScreen = (props) => {
-  const { route } = props;
+  const { route, navigation } = props;
 
   const inviteeItem = route.params.invitee;
-  const { id, name, checkIn, isPriority } = inviteeItem;
+  const { id, name, checkIn, isPriority, image } = inviteeItem;
 
   const newName = name.charAt(0).toUpperCase() + name.slice(1);
 
@@ -24,6 +25,12 @@ const inviteeDetailScreen = (props) => {
   // const openCamera = () => {
   //   setIsCameraOpen(true);
   // };
+
+  useEffect(() => {
+    navigation.addListener("didFocus", () => {
+      // try later using this to update the checkin button
+    });
+  });
 
   const updateCheckIn = () => {
     const db = getDatabase();
@@ -49,17 +56,9 @@ const inviteeDetailScreen = (props) => {
         </View>
 
         <DropDown />
-
-        {/* <View style={styles.textInput}>
-          <TextInput
-            maxLength={2}
-            keyboardType="numeric"
-            placeholder="Table no."
-          />
-        </View> */}
       </View>
       <View style={styles.imagePickerContainer}>
-        <ImgPicker />
+        <ImgPicker invitee={inviteeItem} image={image} />
       </View>
       <View style={styles.submit}>
         <CheckinButton

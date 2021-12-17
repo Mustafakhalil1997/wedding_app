@@ -9,6 +9,14 @@ import update from "react-addons-update";
 const dummy_list = [
   new Invitee("id", "my brother", true, false),
   new Invitee("id2", "someone", true, false),
+  new Invitee("id", "my brother", true, false),
+  new Invitee("id2", "someone", true, false),
+  new Invitee("id", "my brother", true, false),
+  new Invitee("id2", "someone", true, false),
+  new Invitee("id", "my brother", true, false),
+  new Invitee("id2", "someone", true, false),
+  new Invitee("id", "my brother", true, false),
+  new Invitee("id2", "someone", true, false),
 ];
 
 const initialState = {

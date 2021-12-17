@@ -3,22 +3,28 @@ import { View, Button, Text, Image, StyleSheet, Alert } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
 import Colors from "../constants/Colors";
+import { InitializeFirebase } from "./../InitializeFirebase";
+import { getDatabase, ref, set } from "firebase/database";
 
-const ImgPicker = (props) => {
-  //   const verifyPermissions = async () => {
-  //     const result = await Permissions.askAsync(Permissions.CAMERA);
-  //     if (result.status !== "granted") {
-  //       Alert.alert(
-  //         "Insufficient permissions!",
-  //         "You need to grand camera permissions to use this app.",
-  //         [{ text: "Okay" }]
-  //       );
-  //       return false;
-  //     }
-  //     return true;
-  //   };
+InitializeFirebase();
 
-  const [image, setImage] = useState();
+const ImgPicker = ({ invitee, image }) => {
+  const [imageUri, setImageUri] = useState(image);
+
+  console.log("image is ", image);
+  const { id, name, checkIn, isPriority } = invitee;
+
+  console.log("image here");
+  if (imageUri) {
+    console.log("image loaded");
+    const db = getDatabase();
+    set(ref(db, "invitees/" + id), {
+      checkin: true,
+      ispriority: isPriority,
+      name: name,
+      image: imageUri,
+    });
+  }
 
   useEffect(() => {
     (async () => {
@@ -47,23 +53,23 @@ const ImgPicker = (props) => {
     //   quality: 1,
     // });
 
-    console.log("result ", result);
+    // console.log("result ", result);
 
     if (!result.cancelled) {
-      setImage(result.uri);
+      setImageUri(result.uri);
     }
   };
 
   return (
     <View style={styles.imagePicker}>
       <Button
-        title="Take Image"
+        title={imageUri ? "RETAKE IMAGE" : "TAKE IMAGE"}
         color={Colors.primaryColor}
         onPress={takeImageHandler}
       />
       <View style={styles.imagePreview}>
-        {!image && <Text>No image picked yet.</Text>}
-        {image && <Image style={styles.image} source={{ uri: image }} />}
+        {!imageUri && <Text>No image picked yet.</Text>}
+        {imageUri && <Image style={styles.image} source={{ uri: imageUri }} />}
       </View>
     </View>
   );

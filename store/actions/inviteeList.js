@@ -50,7 +50,11 @@ export const setList = () => {
         const name = resData[key].name;
         const isPriority = resData[key].ispriority;
         const checkIn = resData[key].checkin;
-        loadedInvitees.push(new Invitee(key, name, isPriority, checkIn));
+        let image = null;
+        if (resData[key].image) {
+          image = resData[key].image;
+        }
+        loadedInvitees.push(new Invitee(key, name, isPriority, checkIn, image));
       }
       console.log("falsyyyyyy");
       // console.log("loadedInvitees ", loadedInvitees);
