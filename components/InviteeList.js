@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { FlatList, View, StyleSheet, TextInput } from "react-native";
 import { useSelector } from "react-redux";
 
@@ -10,7 +10,6 @@ const InviteeList = (props) => {
   const [nameInput, setNameInput] = useState("");
 
   const inputChangeHander = (value) => {
-    console.log("value ", value);
     setNameInput(value);
     textChangeHandler(value);
   };
@@ -23,6 +22,8 @@ const InviteeList = (props) => {
     return <InviteeItem item={item} navigation={navigation} />;
   };
 
+  const flatList = useRef(null);
+
   return (
     <View style={styles.screenContainer}>
       <View style={styles.textInput}>
@@ -33,20 +34,21 @@ const InviteeList = (props) => {
           onChangeText={inputChangeHander}
         />
       </View>
-      <View>
-        <FlatList
-          data={data}
-          renderItem={renderName}
-          // keyExtractor={(item, index) => index}
-        />
-      </View>
+      {/* <View> */}
+      <FlatList
+        data={data}
+        renderItem={renderName}
+        // keyExtractor={(item, index) => index}
+      />
+      {/* </View> */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   screenContainer: {
-    margin: 5,
+    marginHorizontal: 7,
+    flex: 1,
 
     // backgroundColor: Colors.primaryColor,
   },

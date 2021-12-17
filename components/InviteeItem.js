@@ -11,6 +11,7 @@ const InviteeItem = (props) => {
   const { item, navigation } = props;
 
   const { id, name, checkIn, isPriority } = item;
+  console.log("item ", item.name);
   // console.log("checkin ", checkIn);
 
   const dispatchEvent = () => {};
