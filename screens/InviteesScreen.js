@@ -57,7 +57,7 @@ const InviteesScreen = ({ navigation }) => {
   const [state, dispatchState] = useReducer(reducer, initialState);
 
   if (dummy_list !== inviteeList) {
-    // had to do this check because dispatch is not asynchronous and useEffect can't wait for it to finish to set the searchList
+    // had to do this check because dispatch is not asynchronous and useEffect can't wait for it to finish to set the searchList.
     setSearchList(dummy_list);
     setInviteeList(dummy_list);
     dispatchState({ type: "setList", list: dummy_list });
