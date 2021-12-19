@@ -2,7 +2,7 @@ import Invitee from "./../../models/invitee";
 import { InitializeFirebase } from "./../../InitializeFirebase";
 import { getDatabase, ref, onValue } from "firebase/database";
 export const SET_LIST = "SET_LIST";
-export const ADD_LIST = "ADD_LIST";
+export const SET_TABLES = "SET_TABLES";
 export const SET_INVITEE = "SET_INVITEE";
 
 InitializeFirebase();
@@ -60,5 +60,11 @@ export const setList = () => {
       // console.log("loadedInvitees ", loadedInvitees);
       dispatch({ type: SET_LIST, inviteeList: loadedInvitees });
     });
+  };
+};
+
+export const setTables = () => {
+  return async (dispatch) => {
+    dispatch({ type: SET_TABLES, tableList: [] });
   };
 };

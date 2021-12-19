@@ -8,7 +8,7 @@ import "react-native-gesture-handler";
 
 import React, { useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { enableScreens } from "react-native-screens";
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
@@ -107,6 +107,10 @@ export default function App() {
       <Stack.Navigator
         screenOptions={{
           headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor:
+              Platform.OS === "android" ? Colors.accentColor : "",
+          },
         }}
       >
         <Stack.Screen
@@ -217,8 +221,32 @@ export default function App() {
 
   const CheckInsStackNavigator = () => {
     return (
-      <Stack.Navigator>
-        <Stack.Screen name="CheckIns" component={CheckinsScreen} />
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor:
+              Platform.OS === "android" ? Colors.accentColor : "",
+          },
+        }}
+      >
+        <Stack.Screen
+          name="CheckIns"
+          component={CheckinsScreen}
+          options={({ navigation }) => ({
+            headerLeft: () => (
+              <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+                <Item
+                  title="Menu"
+                  iconName="ios-menu"
+                  onPress={() => {
+                    navigation.toggleDrawer();
+                  }}
+                />
+              </HeaderButtons>
+            ),
+          })}
+        />
       </Stack.Navigator>
     );
   };

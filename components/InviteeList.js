@@ -22,8 +22,6 @@ const InviteeList = (props) => {
     return <InviteeItem item={item} navigation={navigation} />;
   };
 
-  const flatList = useRef(null);
-
   return (
     <View style={styles.screenContainer}>
       <View style={styles.textInput}>
