@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useReducer, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import InviteeList from "../components/InviteeList";
@@ -28,63 +28,84 @@ import Colors from "../constants/Colors";
 
 InitializeFirebase();
 
+const initialState = { list: [], loading: true };
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "setList":
+      return {
+        list: action.list,
+        loading: false,
+      };
+    case "setLoading":
+      return {
+        ...state,
+        loading: !state.loading,
+      };
+    default:
+      return state;
+  }
+};
+
 const InviteesScreen = ({ navigation }) => {
   const dummy_list = useSelector((state) => state.inviteeList.inviteeList);
   // console.log("dummy_list ", dummy_list);
   const [inviteeList, setInviteeList] = useState(dummy_list);
   const [searchList, setSearchList] = useState(dummy_list);
-  // console.log("searchList ", searchList);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [state, dispatchState] = useReducer(reducer, initialState);
+
+  if (dummy_list !== inviteeList) {
+    // had to do this check because dispatch is not asynchronous and useEffect can't wait for it to finish to set the searchList
+    setSearchList(dummy_list);
+    setInviteeList(dummy_list);
+    dispatchState({ type: "setList", list: dummy_list });
+  }
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // const db = getDatabase();
-    // const list = ref(db, "invitees");
-    // setIsLoading(true);
-    // dispatch(setList())
-    //   .then(() => {
-    //     console.log("falsyy");
-    //     setIsLoading(false);
-    //   })
-    //   .catch((error) => {});
     const loadList = async () => {
-      setIsLoading(true);
       await dispatch(setList()); // await is not working and the code is still running asynchronously
-      setIsLoading(false);
     };
     loadList();
-    setSearchList(dummy_list);
+    // setSearchList(dummy_list); // doesn't work because await is not working above
   }, [dispatch]);
 
   const textChangeHandler = (value) => {
     console.log("value ", value);
     const newArray = inviteeList.filter((item) => {
+      const name = item.name;
       const length = value.length;
       console.log("item in search ", value);
-      const newItem = item.slice(0, length);
+      const newItem = name.slice(0, length);
       console.log("newItem ", newItem);
-      if (value.toLowerCase() === newItem.toLowerCase()) return item;
+      if (value.toLowerCase() === newItem.toLowerCase()) {
+        console.log("equaallllllllll");
+        return item;
+      }
     });
+    console.log(newArray);
 
     setSearchList(newArray);
   };
 
-  if (isLoading) {
-    console.log("isLoadinggg ", isLoading);
+  if (state.loading) {
+    console.log("isLoadinggg ", state.loading);
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" color={Colors.primaryColor} />
-        <Text>isLoading</Text>
+        <Text>Loading</Text>
       </View>
     );
   } else {
-    console.log("isLoading ", isLoading);
+    console.log("isLoading ", state.loading);
     return (
       <InviteeList
         navigation={navigation}
         textChangeHandler={textChangeHandler}
-        data={dummy_list}
+        data={state.list}
       />
     );
   }
