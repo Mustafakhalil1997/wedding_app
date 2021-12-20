@@ -8,24 +8,6 @@ import { setList } from "../store/actions/inviteeList";
 import { InitializeFirebase } from "./../InitializeFirebase";
 import Colors from "../constants/Colors";
 
-// // Your web app's Firebase configuration
-// // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// const firebaseConfig = {
-//   apiKey: "AIzaSyAioK_0pdMEniIqmQ97K2HkmaaYWoSo8Wk",
-//   authDomain: "weddingproject2-ce55f.firebaseapp.com",
-//   databaseURL: "https://weddingproject2-ce55f-default-rtdb.firebaseio.com",
-//   projectId: "weddingproject2-ce55f",
-//   storageBucket: "weddingproject2-ce55f.appspot.com",
-//   messagingSenderId: "917688119636",
-//   appId: "1:917688119636:web:033e8eecfbb0b0699018c1",
-//   measurementId: "G-N61VX498CT",
-// };
-
-// // // Initialize Firebase
-// // // const app = initializeApp(firebaseConfig);
-// // // const analytics = getAnalytics(app);
-// initializeApp(firebaseConfig);
-
 InitializeFirebase();
 
 const initialState = { list: [], loading: true };
@@ -34,13 +16,13 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "setList":
       return {
+        ...state,
         list: action.list,
-        loading: false,
       };
     case "setLoading":
       return {
         ...state,
-        loading: !state.loading,
+        loading: action.loading,
       };
     default:
       return state;
@@ -49,33 +31,38 @@ const reducer = (state, action) => {
 
 const InviteesScreen = ({ navigation }) => {
   const dummy_list = useSelector((state) => state.inviteeList.inviteeList);
-  // console.log("dummy_list ", dummy_list);
-  const [inviteeList, setInviteeList] = useState(dummy_list);
+
   const [searchList, setSearchList] = useState(dummy_list);
   const [isLoading, setIsLoading] = useState(false);
 
   const [state, dispatchState] = useReducer(reducer, initialState);
 
-  if (dummy_list !== inviteeList) {
+  if (dummy_list !== state.list) {
     // had to do this check because dispatch is not asynchronous and useEffect can't wait for it to finish to set the searchList.
     setSearchList(dummy_list);
-    setInviteeList(dummy_list);
     dispatchState({ type: "setList", list: dummy_list });
   }
 
+  console.log("searchList ");
+
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatchState({ type: "setLoading", loading: false });
+  }, [state.list]);
 
   useEffect(() => {
     const loadList = async () => {
       await dispatch(setList()); // await is not working and the code is still running asynchronously
     };
+    dispatchState({ type: "setLoading", loading: true });
     loadList();
     // setSearchList(dummy_list); // doesn't work because await is not working above
   }, [dispatch]);
 
   const textChangeHandler = (value) => {
     console.log("value ", value);
-    const newArray = inviteeList.filter((item) => {
+    const newArray = state.list.filter((item) => {
       const name = item.name;
       const length = value.length;
       console.log("item in search ", value);
@@ -100,12 +87,12 @@ const InviteesScreen = ({ navigation }) => {
       </View>
     );
   } else {
-    console.log("isLoading ", state.loading);
+    console.log("iSLoading ", state.loading);
     return (
       <InviteeList
         navigation={navigation}
         textChangeHandler={textChangeHandler}
-        data={state.list}
+        data={searchList}
       />
     );
   }
