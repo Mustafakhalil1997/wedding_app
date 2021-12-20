@@ -1,31 +1,64 @@
-import React, { useState } from "react";
+import React, { useMemo, useReducer, useState } from "react";
 import { useSelector } from "react-redux";
 import InviteeList from "../components/InviteeList";
 import { View, Text, ActivityIndicator } from "react-native";
-import { Colors } from "react-native/Libraries/NewAppScreen";
+
+const initialState = { list: [], loading: false };
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "setList":
+      return {
+        ...state,
+        list: action.list,
+      };
+    case "setLoading":
+      return {
+        ...state,
+        loading: action.loading,
+      };
+    default:
+      return state;
+  }
+};
 
 const CheckinsScreen = (props) => {
   const { navigation, route } = props;
 
   const inviteeList = useSelector((state) => state.inviteeList.inviteeList);
 
-  const checkInList = [];
+  // const checkInList = [];
 
-  inviteeList.map((item) => {
-    if (item.checkIn) checkInList.push(item);
-  });
+  // inviteeList.map((item) => {
+  //   if (item.checkIn) checkInList.push(item);
+  // });
 
-  const textChangeHandler = () => {};
+  const checkInList = useMemo(() => {
+    return inviteeList.filter((item) => {
+      return item.checkIn;
+    });
+  }, [inviteeList]);
 
-  // if (isLoading) {
-  //   console.log("isLoadinggg ", isLoading);
-  //   return (
-  //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-  //       <ActivityIndicator size="large" color={Colors.primaryColor} />
-  //       <Text>isLoading</Text>
-  //     </View>
-  //   );
-  // }
+  const [searchList, setSearchList] = useState(checkInList);
+  const [state, dispatchState] = useReducer(reducer, initialState);
+
+  if (checkInList !== state.list) {
+    // had to do this check because dispatch is not asynchronous and useEffect can't wait for it to finish to set the searchList.
+    setSearchList(checkInList);
+    dispatchState({ type: "setList", list: checkInList });
+  }
+
+  const textChangeHandler = (value) => {
+    const newArray = state.list.filter((item) => {
+      const name = item.name;
+      const length = value.length;
+      const newItem = name.slice(0, length);
+      if (value.toLowerCase() === newItem.toLowerCase()) {
+        return item;
+      }
+    });
+    setSearchList(newArray);
+  };
 
   return (
     <React.Fragment>
@@ -33,7 +66,7 @@ const CheckinsScreen = (props) => {
         <InviteeList
           navigation={navigation}
           textChangeHandler={textChangeHandler}
-          data={checkInList}
+          data={searchList}
         />
       )}
       {!checkInList && (

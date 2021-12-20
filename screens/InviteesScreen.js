@@ -1,16 +1,14 @@
-import React, { useEffect, useMemo, useReducer, useState } from "react";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import React, { useEffect, useReducer, useState } from "react";
+import { View, Text, ActivityIndicator } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import InviteeList from "../components/InviteeList";
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onValue } from "firebase/database";
 import { setList } from "../store/actions/inviteeList";
 import { InitializeFirebase } from "./../InitializeFirebase";
 import Colors from "../constants/Colors";
 
 InitializeFirebase();
 
-const initialState = { list: [], loading: true };
+const initialState = { list: [], loading: false };
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -33,8 +31,6 @@ const InviteesScreen = ({ navigation }) => {
   const dummy_list = useSelector((state) => state.inviteeList.inviteeList);
 
   const [searchList, setSearchList] = useState(dummy_list);
-  const [isLoading, setIsLoading] = useState(false);
-
   const [state, dispatchState] = useReducer(reducer, initialState);
 
   if (dummy_list !== state.list) {
@@ -61,20 +57,14 @@ const InviteesScreen = ({ navigation }) => {
   }, [dispatch]);
 
   const textChangeHandler = (value) => {
-    console.log("value ", value);
     const newArray = state.list.filter((item) => {
       const name = item.name;
       const length = value.length;
-      console.log("item in search ", value);
       const newItem = name.slice(0, length);
-      console.log("newItem ", newItem);
       if (value.toLowerCase() === newItem.toLowerCase()) {
-        console.log("equaallllllllll");
         return item;
       }
     });
-    console.log(newArray);
-
     setSearchList(newArray);
   };
 
