@@ -14,10 +14,10 @@ const InviteeList = (props) => {
     textChangeHandler(value);
   };
 
-  let count = 1;
+  // let count = 1;
 
   const renderName = (itemData) => {
-    count++;
+    // count++;
     const { item } = itemData;
     return <InviteeItem item={item} navigation={navigation} />;
   };

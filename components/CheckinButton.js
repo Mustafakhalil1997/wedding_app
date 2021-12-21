@@ -19,7 +19,7 @@ const CheckinButton = (props) => {
 
   return (
     <View style={{ ...styles.buttonContainer }}>
-      {!isCheckedin && (
+      {isCheckedin === "" && (
         <Touchablecmp onPress={checkinInvitee}>
           <View style={styles.button}>
             <Text
@@ -31,7 +31,7 @@ const CheckinButton = (props) => {
           </View>
         </Touchablecmp>
       )}
-      {isCheckedin && (
+      {isCheckedin !== "" && (
         <View style={styles.checkedinContainer}>
           <Text style={{ ...styles.checkedinText, ...props.styles }}>
             Checked in

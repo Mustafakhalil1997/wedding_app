@@ -33,9 +33,13 @@ const inviteeDetailScreen = (props) => {
   });
 
   const updateCheckIn = () => {
+    const today = new Date();
+    const currentTime =
+      today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
     const db = getDatabase();
     set(ref(db, "invitees/" + id), {
-      checkin: true,
+      checkin: currentTime,
       ispriority: isPriority,
       name: name,
     });

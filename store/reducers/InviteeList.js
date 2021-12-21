@@ -30,19 +30,19 @@ const inviteeListReducer = (state = initialState, action) => {
         ...state,
         inviteeList: action.inviteeList,
       };
-    case SET_INVITEE:
-      const inviteeId = action.inviteeId;
-      const index = state.inviteeList.findIndex((item, index) => {
-        console.log("inviteeId ", inviteeId, " item.id ", item.id);
-        return item.id === inviteeId;
-      });
-      console.log("index ", index);
-      const newList = [...state.inviteeList];
-      newList[index].setCheckin();
-      return {
-        ...state,
-        inviteeList: newList,
-      };
+    // case SET_INVITEE:
+    //   const inviteeId = action.inviteeId;
+    //   const index = state.inviteeList.findIndex((item, index) => {
+    //     console.log("inviteeId ", inviteeId, " item.id ", item.id);
+    //     return item.id === inviteeId;
+    //   });
+    //   console.log("index ", index);
+    //   const newList = [...state.inviteeList];
+    //   newList[index].setCheckin();
+    //   return {
+    //     ...state,
+    //     inviteeList: newList,
+    //   };
   }
   return state;
 };

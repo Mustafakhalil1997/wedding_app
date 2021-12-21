@@ -30,6 +30,8 @@ const reducer = (state, action) => {
 const InviteesScreen = ({ navigation }) => {
   const dummy_list = useSelector((state) => state.inviteeList.inviteeList);
 
+  console.log("dummy_list ", dummy_list);
+
   const [searchList, setSearchList] = useState(dummy_list);
   const [state, dispatchState] = useReducer(reducer, initialState);
 
