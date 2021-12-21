@@ -2,8 +2,7 @@ import React from "react";
 import { View, StyleSheet, Text, TouchableNativeFeedback } from "react-native";
 import CheckinButton from "./CheckinButton";
 import { InitializeFirebase } from "./../InitializeFirebase";
-import { getDatabase, set, ref } from "firebase/database";
-import { useDispatch } from "react-redux";
+import { getDatabase, ref, update } from "firebase/database";
 
 InitializeFirebase();
 
@@ -17,11 +16,13 @@ const InviteeItem = (props) => {
   const dispatchEvent = () => {};
 
   const updateCheckIn = () => {
+    const today = new Date();
+    const currentTime =
+      today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
     const db = getDatabase();
-    set(ref(db, "invitees/" + id), {
-      checkin: true,
-      ispriority: isPriority,
-      name: name,
+    update(ref(db, "invitees/" + id), {
+      checkin: currentTime,
     });
   };
 
