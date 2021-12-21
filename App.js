@@ -29,6 +29,7 @@ import InviteesScreen from "./screens/InviteesScreen";
 import inviteeDetailScreen from "./screens/InviteeDetailScreen";
 import TablesScreen from "./screens/TablesScreen";
 import inviteeListReducer from "./store/reducers/InviteeList";
+import tableListReducer from "./store/reducers/tablesList";
 import TableDetailScreen from "./screens/TableDetailScreen";
 import CustomHeaderButton from "./components/HeaderButton";
 import CheckinsScreen from "./screens/CheckinsScreen";
@@ -44,6 +45,7 @@ const fetchFonts = () => {
 
 const rootReducer = combineReducers({
   inviteeList: inviteeListReducer,
+  tableList: tableListReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
@@ -166,9 +168,9 @@ export default function App() {
         <Stack.Screen
           name="table"
           component={TableDetailScreen}
-          options={{
-            title: "Table Number",
-          }}
+          options={({ route, navigation }) => ({
+            title: "Table " + route.params.tableNumber,
+          })}
         />
       </Stack.Navigator>
     );

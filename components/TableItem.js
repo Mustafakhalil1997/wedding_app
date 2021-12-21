@@ -3,10 +3,21 @@ import { View, StyleSheet, Text, TouchableNativeFeedback } from "react-native";
 import { Ionicons, Zocial } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 
-const TableItem = ({ navigation }) => {
+const TableItem = ({ navigation, item }) => {
+  const { id, number, ispriority, full, listPeople } = item;
+
   const navigateToTable = () => {
     navigation.navigate({
       name: "table",
+      params: {
+        tableItem: item,
+        tableNumber: number,
+      },
+      // id: id,
+      // number: number,
+      // isPriority: ispriority,
+      // full: full,
+      // listPeople: listPeople
     });
   };
 
@@ -15,7 +26,7 @@ const TableItem = ({ navigation }) => {
       <TouchableNativeFeedback onPress={navigateToTable}>
         <View style={styles.container}>
           {/* <Zocial name={"opentable"} size={120} color={"green"} /> */}
-          <Text style={styles.tableNumber}>Table 3</Text>
+          <Text style={styles.tableNumber}>Table {number}</Text>
         </View>
       </TouchableNativeFeedback>
     </View>

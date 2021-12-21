@@ -1,20 +1,27 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import DefaultText from "../components/DefaultText";
 import Colors from "../constants/Colors";
 
-const TableDetailScreen = (props) => {
+const TableDetailScreen = ({ navigation, route }) => {
+  const tableItem = route.params.tableItem;
+  const { id, ispriority, full, listPeople } = tableItem;
+
   return (
     <View style={styles.container}>
       <View style={styles.tableItem}>
         <View style={styles.priorityContainer}>
           <DefaultText styles={styles.text}>
             Priority:{" "}
-            <DefaultText styles={{ color: "green" }}>HIGH</DefaultText>
+            <DefaultText styles={{ color: "green" }}>
+              {ispriority ? "HIGH" : "LOW"}
+            </DefaultText>
           </DefaultText>
         </View>
         <DefaultText styles={styles.text}>5 Chairs Left</DefaultText>
-        <DefaultText styles={styles.text}>Full or not</DefaultText>
+        <DefaultText styles={styles.text}>
+          {full ? "Full" : "Empty"}
+        </DefaultText>
       </View>
       <DefaultText styles={styles.text}>List of people sitting</DefaultText>
     </View>

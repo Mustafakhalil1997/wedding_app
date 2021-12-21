@@ -27,19 +27,6 @@ export const setInvitee = (itemId) => {
 
 export const setList = () => {
   return async (dispatch) => {
-    // const response = await fetch(
-    //   "https://weddingproject2-ce55f-default-rtdb.firebaseio.com/invitees.json"
-    // );
-    // const resData = await response.json();
-    // const loadedInvitees = [];
-    // for (const key in resData) {
-    //   const name = resData[key].name;
-    //   const isPriority = resData[key].ispriority;
-    //   const checkIn = resData[key].checkin;
-    //   loadedInvitees.push(new Invitee(key, name, isPriority, checkIn));
-    // }
-    // dispatch({ type: SET_LIST, inviteeList: loadedInvitees });
-
     const db = getDatabase();
     const listRef = ref(db, "invitees");
 
@@ -60,6 +47,19 @@ export const setList = () => {
       // console.log("loadedInvitees ", loadedInvitees);
       dispatch({ type: SET_LIST, inviteeList: loadedInvitees });
     });
+
+    // const response = await fetch(
+    //   "https://weddingproject2-ce55f-default-rtdb.firebaseio.com/invitees.json"
+    // );
+    // const resData = await response.json();
+    // const loadedInvitees = [];
+    // for (const key in resData) {
+    //   const name = resData[key].name;
+    //   const isPriority = resData[key].ispriority;
+    //   const checkIn = resData[key].checkin;
+    //   loadedInvitees.push(new Invitee(key, name, isPriority, checkIn));
+    // }
+    // dispatch({ type: SET_LIST, inviteeList: loadedInvitees });
   };
 };
 
