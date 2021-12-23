@@ -7,27 +7,28 @@ export const SET_INVITEE = "SET_INVITEE";
 
 InitializeFirebase();
 
-export const addList = (list) => {
-  return (dispatch) => {
-    // any async code you want!
-    // fetch();
-    dispatch({ type: ADD_LIST, inviteeList: list });
-  };
-};
+// export const addList = (list) => {
+//   return (dispatch) => {
+//     // any async code you want!
+//     // fetch();
+//     dispatch({ type: ADD_LIST, inviteeList: list });
+//   };
+// };
 
-export const setInvitee = (itemId) => {
-  return async (dispatch) => {
-    const db = getDatabase();
-    const itemRef = ref(db, "invitees/" + itemId);
-    onValue(itemRef, (snapshot) => {
-      dispatch({ type: SET_INVITEE, inviteeId: itemId });
-    });
-  };
-};
+// export const setInvitee = (itemId) => {
+//   return async (dispatch) => {
+//     const db = getDatabase();
+//     const itemRef = ref(db, "invitees/" + itemId);
+//     onValue(itemRef, (snapshot) => {
+//       dispatch({ type: SET_INVITEE, inviteeId: itemId });
+//     });
+//   };
+// };
 
 export const setList = () => {
   return async (dispatch) => {
     const db = getDatabase();
+    // const listRef = ref(db, "invitees", orderByValue("ispriority"));
     const listRef = ref(db, "invitees");
 
     onValue(listRef, async (snapshot) => {
@@ -37,11 +38,14 @@ export const setList = () => {
         const name = resData[key].name;
         const isPriority = resData[key].ispriority;
         const checkIn = resData[key].checkin;
+        const tableNumber = resData[key].table;
         let image = null;
         if (resData[key].image) {
           image = resData[key].image;
         }
-        loadedInvitees.push(new Invitee(key, name, isPriority, checkIn, image));
+        loadedInvitees.push(
+          new Invitee(key, name, isPriority, checkIn, image, tableNumber)
+        );
       }
       console.log("falsyyyyyy");
       // console.log("loadedInvitees ", loadedInvitees);
@@ -60,11 +64,5 @@ export const setList = () => {
     //   loadedInvitees.push(new Invitee(key, name, isPriority, checkIn));
     // }
     // dispatch({ type: SET_LIST, inviteeList: loadedInvitees });
-  };
-};
-
-export const setTables = () => {
-  return async (dispatch) => {
-    dispatch({ type: SET_TABLES, tableList: [] });
   };
 };

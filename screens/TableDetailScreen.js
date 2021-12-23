@@ -6,7 +6,7 @@ import Colors from "../constants/Colors";
 const TableDetailScreen = ({ navigation, route }) => {
   const tableItem = route.params.tableItem;
   const { id, ispriority, full, listPeople } = tableItem;
-
+  console.log("listPeople ", listPeople);
   return (
     <View style={styles.container}>
       <View style={styles.tableItem}>
@@ -18,7 +18,9 @@ const TableDetailScreen = ({ navigation, route }) => {
             </DefaultText>
           </DefaultText>
         </View>
-        <DefaultText styles={styles.text}>5 Chairs Left</DefaultText>
+        <DefaultText styles={styles.text}>
+          {10 - listPeople.length} Chairs Left
+        </DefaultText>
         <DefaultText styles={styles.text}>
           {full ? "Full" : "Empty"}
         </DefaultText>

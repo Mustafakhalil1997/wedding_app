@@ -28,8 +28,11 @@ const TablesList = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setIsLoading(true);
-    dispatch(setTableList());
+    if (tableList.length === 0) {
+      console.log("setting again");
+      setIsLoading(true);
+      dispatch(setTableList());
+    }
   }, [dispatch]);
 
   const renderTable = ({ item }) => {

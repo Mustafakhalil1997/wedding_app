@@ -19,10 +19,7 @@ export const setTableList = () => {
         const isPriority = resData[key].ispriority;
         const listPeople = resData[key].listPeople;
         const full = resData[key].full;
-        let image = null;
-        if (resData[key].image) {
-          image = resData[key].image;
-        }
+
         loadedTables.push(new Table(key, number, isPriority, full, listPeople));
       }
       console.log("falsyyyyyy");

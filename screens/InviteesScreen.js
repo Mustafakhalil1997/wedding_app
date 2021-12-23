@@ -1,9 +1,11 @@
 import React, { useEffect, useReducer, useState } from "react";
 import { View, Text, ActivityIndicator } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import InviteeList from "../components/InviteeList";
-import { setList } from "../store/actions/inviteeList";
 import { InitializeFirebase } from "./../InitializeFirebase";
+import { setList } from "../store/actions/inviteeList";
+import { setTableList } from "../store/actions/tablesList";
+
+import InviteeList from "../components/InviteeList";
 import Colors from "../constants/Colors";
 
 InitializeFirebase();
@@ -52,6 +54,7 @@ const InviteesScreen = ({ navigation }) => {
   useEffect(() => {
     const loadList = async () => {
       await dispatch(setList()); // await is not working and the code is still running asynchronously
+      dispatch(setTableList());
     };
     dispatchState({ type: "setLoading", loading: true });
     loadList();

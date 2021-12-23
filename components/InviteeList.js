@@ -9,6 +9,9 @@ const InviteeList = (props) => {
 
   const [nameInput, setNameInput] = useState("");
 
+  const tableList = useSelector((state) => state.tableList.tableList);
+  console.log(tableList);
+
   const inputChangeHander = (value) => {
     setNameInput(value);
     textChangeHandler(value);
