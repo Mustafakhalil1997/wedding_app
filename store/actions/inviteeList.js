@@ -1,6 +1,7 @@
 import Invitee from "./../../models/invitee";
 import { InitializeFirebase } from "./../../InitializeFirebase";
 import { getDatabase, ref, onValue } from "firebase/database";
+
 export const SET_LIST = "SET_LIST";
 export const SET_TABLES = "SET_TABLES";
 export const SET_INVITEE = "SET_INVITEE";

@@ -9,7 +9,7 @@ InitializeFirebase();
 const InviteeItem = (props) => {
   const { item, navigation } = props;
 
-  const { id, name, checkIn, isPriority } = item;
+  const { id, name, checkIn, isPriority, tableNumber } = item;
   // console.log("item ", item.name);
   // console.log("checkin ", checkIn);
 
@@ -24,6 +24,11 @@ const InviteeItem = (props) => {
     update(ref(db, "invitees/" + id), {
       checkin: currentTime,
     });
+
+    update(ref(db, `tables/table${tableNumber}`), {
+      listPeople: [name],
+    });
+    // update(ref())
   };
 
   const checkinInvitee = () => {
